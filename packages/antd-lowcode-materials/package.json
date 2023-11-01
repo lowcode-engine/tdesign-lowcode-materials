@@ -1,0 +1,80 @@
+{
+  "name": "@alilc/antd-lowcode-materials",
+  "version": "1.2.2",
+  "description": "Antd for LowCode",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "build-scripts build",
+    "lowcode:dev": "build-scripts start --config ./build.lowcode.js",
+    "lowcode:build": "build-scripts build --config ./build.lowcode.js",
+    "prepublishOnly": "npm run build && npm run lowcode:build"
+  },
+  "files": [
+    "es/",
+    "lib/",
+    "dist/",
+    "build/",
+    "lowcode/",
+    "lowcode_lib/",
+    "lowcode_es/"
+  ],
+  "devDependencies": {
+    "@alib/build-scripts": "^0.1.23",
+    "@alifd/build-plugin-lowcode": "^0.4.0",
+    "@ant-design/icons": "^4.7.0",
+    "@types/lodash": "^4.14.181",
+    "@types/react": "^18.0.1",
+    "@types/react-dom": "^18.0.0",
+    "build-plugin-component": "^1.10.0",
+    "build-plugin-moment-locales": "^0.1.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "style-loader": "^2.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "typescript": "^3.9.3",
+    "yorkie": "^2.0.0"
+  },
+  "authors": [
+    {
+      "name": "莫夭"
+    },
+    {
+      "name": "金禅"
+    }
+  ],
+  "dependencies": {
+    "@ant-design/icons": "^4.6.2",
+    "antd": "^4.24.7",
+    "moment": "^2.29.1",
+    "@babel/runtime": "^7.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "componentConfig": {
+    "materialSchema": "https://alifd.alicdn.com/npm/@alilc/antd-lowcode-materials@1.2.2/build/lowcode/assets-prod.json"
+  },
+  "license": "MIT",
+  "homepage": "https://unpkg.com/@alilc/antd-lowcode-materials@1.2.2/build/index.html",
+  "repository": "https://github.com/alibaba/lowcode-materials.git",
+  "exports": {
+    "./prototype": {
+      "require": "./lowcode_lib/meta.js",
+      "import": "./lowcode_es/meta.js"
+    },
+    "./prototypeView": {
+      "require": "./lowcode_lib/view.js",
+      "import": "./lowcode_es/view.js"
+    },
+    "./*": "./*",
+    ".": {
+      "import": "./es/index.js",
+      "require": "./lib/index.js"
+    }
+  },
+  "lcMeta": {
+    "type": "component"
+  }
+}
