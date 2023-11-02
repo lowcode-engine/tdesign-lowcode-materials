@@ -1,6 +1,6 @@
 {
   "name": "@alilc/tdesign-lowcode-materials",
-  "version": "1.2.2",
+  "version": "1.0.0",
   "description": "Antd for LowCode",
   "main": "lib/index.js",
   "scripts": {
