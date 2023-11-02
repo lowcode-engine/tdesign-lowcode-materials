@@ -1,6 +1,6 @@
 const { name, version } = require("./package.json");
 
-const library = 'AntdLowcode';
+const library = 'TDesignLowcode';
 
 module.exports = {
   sourceMap: false,
