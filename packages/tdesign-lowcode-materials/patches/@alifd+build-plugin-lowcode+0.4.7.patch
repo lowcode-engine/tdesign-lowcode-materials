@@ -1,0 +1,119 @@
+diff --git a/node_modules/@alifd/build-plugin-lowcode/src/index.js b/node_modules/@alifd/build-plugin-lowcode/src/index.js
+index 9cfcbb5..ad560a0 100644
+--- a/node_modules/@alifd/build-plugin-lowcode/src/index.js
++++ b/node_modules/@alifd/build-plugin-lowcode/src/index.js
+@@ -11,6 +11,7 @@ const babelCompile = require('./compile/babel');
+ const metaCompile = require('./compile/meta');
+ const getDemoDir = require('./utils/getDemoDir');
+ const isWsl = require('is-wsl');
++const os = require('os');
+ 
+ let INIT_STATE = false;
+ let PARSED_NPM_NAME;
+@@ -65,25 +66,36 @@ const defaultScssEntryPaths = [
+   `./components/index.scss`,
+ ];
+ 
+-function getEntry(rootDir, entryPath) {
++// 修改
++function normalizePathTextForWindows(pathText) {
++  if (os.platform() === 'win32') {
++    return pathText.replace(/\\/g, '\\\\');
++  }
++  return pathText;
++}
++
++function getEntry(rootDir, entryPath, needNormalizeForWindows) {
+   if (entryPath && fse.existsSync(path.resolve(rootDir, entryPath))) {
+-    return path.resolve(rootDir, entryPath).replace(/\\/g, '\\\\');
++    // return path.resolve(rootDir, entryPath).replace(/\\/g, '\\\\');
++    return needNormalizeForWindows ? normalizePathTextForWindows(path.resolve(rootDir, entryPath)) : path.resolve(rootDir, entryPath);
+   }
+   for (let i = 0; i < defaultEntryPaths.length; i++) {
+     const p = path.resolve(rootDir, defaultEntryPaths[i]);
+     if (fse.existsSync(p)) {
+-      return p.replace(/\\/g, '\\\\');
++      return needNormalizeForWindows ? normalizePathTextForWindows(p) : p;
++      // return p.replace(/\\/g, '\\\\');
+       // return p;
+     }
+   }
+   return '';
+ }
+ 
+-function getScssEntry(rootDir) {
++function getScssEntry(rootDir, needNormalizeForWindows) {
+   for (let i = 0; i < defaultScssEntryPaths.length; i++) {
+     const p = path.resolve(rootDir, defaultScssEntryPaths[i]);
+     if (fse.existsSync(p)) {
+-      return p.replace(/\\/g, '\\\\');
++      return needNormalizeForWindows ? normalizePathTextForWindows(p) : p
++      // return p.replace(/\\/g, '\\\\');
+       // return p;
+     }
+   }
+@@ -530,7 +542,8 @@ async function initLowCodeSchema(
+   if (!PARSED_NPM_NAME) {
+     PARSED_NPM_NAME = parseNpmName(package.name);
+   }
+-  const entry = getEntry(rootDir, entryPath);
++  // const entry = getEntry(rootDir, entryPath);
++  const entry = getEntry(rootDir, entryPath, false);
+   const lowcodeDirExists = await fse.existsSync(path.resolve(rootDir, lowcodeDir));
+   if (lowcodeDirExists) {
+     const lowcodeDirs = await fse.readdir(path.resolve(rootDir, lowcodeDir));
+@@ -847,17 +860,19 @@ async function bundleEditorView(
+       .map((component) => {
+         const componentNameFolder = camel2KebabComponentName(component);
+         const viewJsPath = path.resolve(rootDir, `${lowcodeDir}/${componentNameFolder}/view`);
+-        return `import * as ${component}Data from '${viewJsPath}'`;
++        // return `import * as ${component}Data from '${viewJsPath}'`;
++        const normalizedViewJsPath = normalizePathTextForWindows(viewJsPath);
++        return `import * as ${component}Data from '${normalizedViewJsPath}'`;
+       })
+       .join('\n');
+   }
+-  const scssEntry = getScssEntry(rootDir);
++  const scssEntry = getScssEntry(rootDir, true);
+   const viewPath = generateEntry({
+     template: 'view.js',
+     filename: 'view.js',
+     rootDir,
+     params: {
+-      entryPath: getEntry(rootDir, entryPath),
++      entryPath: getEntry(rootDir, entryPath, true),
+       scssImport: scssEntry ? `import '${scssEntry}'` : '',
+       componentViews,
+       componentViewsExportStr,
+@@ -958,7 +973,8 @@ async function bundleRenderView(options, pluginOptions, platform, execCompile) {
+       return `const ${component} = getRealComponent(${component}Data, '${component}');\nexport { ${component} };`;
+     })
+     .join('\n');
+-  const exportPath = `\nexport { default } from '${getEntry(rootDir, entryPath)}';`;
++  // const exportPath = `\nexport { default } from '${getEntry(rootDir, entryPath)}';`;
++  const exportPath = `\nexport { default } from '${getEntry(rootDir, entryPath, true)}';`;
+   componentViewsExportStr += exportPath.includes('\\\\') ? exportPath : exportPath.replace(/\\/g, '\\\\');
+   componentViewsImportStr = _componentViews
+     .map((component) => {
+@@ -967,16 +983,18 @@ async function bundleRenderView(options, pluginOptions, platform, execCompile) {
+         rootDir,
+         `src/${platform}/components/${componentNameFolder}/view`,
+       );
+-      return `import * as ${component}Data from '${viewJsPath}'`;
++      // return `import * as ${component}Data from '${viewJsPath}'`;
++      const normalizedViewJsPath = normalizePathTextForWindows(viewJsPath);
++      return `import * as ${component}Data from '${normalizedViewJsPath}'`;
+     })
+     .join('\n');
+-  const scssEntry = getScssEntry(rootDir);
++  const scssEntry = getScssEntry(rootDir, true);
+   const viewPath = generateEntry({
+     template: 'view.js',
+     filename: `${platform}.view.js`,
+     rootDir,
+     params: {
+-      entryPath: getEntry(rootDir, entryPath),
++      entryPath: getEntry(rootDir, entryPath, true),
+       scssImport: scssEntry ? `import '${scssEntry}'` : '',
+       componentViews,
+       componentViewsExportStr,
