@@ -1,11 +1,12 @@
 export default [
   {
-    title: '主按钮',
+    title: 'TDesign主按钮',
     screenshot: require('./__screenshots__/button-1.png'),
     schema: {
       componentName: 'Button',
       props: {
-        type: 'primary',
+        type: 'button',
+        variant: 'base',
         children: '主按钮',
       },
     },
