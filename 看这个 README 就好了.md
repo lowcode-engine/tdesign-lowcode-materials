@@ -15,4 +15,6 @@ win10
 
 本仓库基于 https://github.com/alibaba/lowcode-materials 7f14ac4 检出
 
-
+配套文章：
+[阿里低代码引擎 | LowCodeEngine - 如何将新组件库接入物料，以TDesign为例
+](https://juejin.cn/post/7296412955477655567)
