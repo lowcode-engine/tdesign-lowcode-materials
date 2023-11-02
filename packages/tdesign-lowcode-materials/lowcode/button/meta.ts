@@ -23,10 +23,10 @@ export default {
           setter: ['SlotSetter', 'StringSetter', 'VariableSetter'],
         },
         {
-          name: 'htmlType',
+          name: 'type',
           title: {
             label: '原生类型',
-            tip: 'htmlType | 设置 `button` 原生的 `type` 值',
+            tip: '设置 `button` 原生的 `type` 值',
           },
           propType: {
             type: 'oneOf',
@@ -65,48 +65,6 @@ export default {
           propType: 'string',
           setter: ['StringSetter', 'VariableSetter'],
         },
-        {
-          name: 'target',
-          title: {
-            label: 'Target',
-            tip: 'target | 相当于 a 链接的 target 属性，href 存在时生效',
-          },
-          propType: {
-            type: 'oneOf',
-            value: ['_self', '_blank', '_parent', '_top'],
-          },
-          setter: [
-            {
-              componentName: 'SelectSetter',
-              props: {
-                options: [
-                  {
-                    title: '本窗口跳转',
-                    value: '_self',
-                  },
-                  {
-                    title: '打开新标签页',
-                    value: '_blank',
-                  },
-                  {
-                    title: '父窗口跳转',
-                    value: '_parent',
-                  },
-                  {
-                    title: '顶层窗口跳转',
-                    value: '_top',
-                  },
-                ],
-              },
-            },
-            'StringSetter',
-            'VariableSetter',
-          ],
-          condition: {
-            type: 'JSFunction',
-            value: 'target => !!target.getProps().getPropValue("href")?.trim()',
-          },
-        },
       ],
     },
     {
@@ -115,11 +73,11 @@ export default {
       type: 'group',
       items: [
         {
-          name: 'type',
-          title: { label: '类型', tip: 'type | 设置按钮类型' },
+          name: 'variant',
+          title: { label: '类型', tip: 'variant | 设置按钮类型' },
           propType: {
             type: 'oneOf',
-            value: ['primary', 'ghost', 'dashed', 'danger', 'link', 'text'],
+            value: ['base', 'outline', 'dashed', 'text'],
           },
           setter: [
             {
@@ -127,23 +85,19 @@ export default {
               props: {
                 options: [
                   {
-                    title: '主按钮',
-                    value: 'primary',
+                    title: '基础',
+                    value: 'base',
                   },
                   {
-                    title: '虚线框按钮',
+                    title: '线框',
+                    value: 'outline',
+                  },
+                  {
+                    title: '虚线',
                     value: 'dashed',
                   },
                   {
-                    title: '危险按钮',
-                    value: 'danger',
-                  },
-                  {
-                    title: '链接按钮',
-                    value: 'link',
-                  },
-                  {
-                    title: '类文本按钮',
+                    title: '文字',
                     value: 'text',
                   },
                 ],
@@ -155,7 +109,7 @@ export default {
         {
           name: 'size',
           title: { label: '尺寸', tip: 'size | 设置按钮大小' },
-          propType: { type: 'oneOf', value: ['large', 'middle', 'small'] },
+          propType: { type: 'oneOf', value: ['large', 'medium', 'small'] },
           setter: [
             {
               componentName: 'RadioGroupSetter',
@@ -167,7 +121,7 @@ export default {
                   },
                   {
                     title: '中',
-                    value: 'middle',
+                    value: 'medium',
                   },
                   {
                     title: '小',
@@ -178,7 +132,7 @@ export default {
             },
             'VariableSetter',
           ],
-          defaultValue: 'middle',
+          defaultValue: 'medium',
         },
         {
           name: 'shape',
@@ -186,52 +140,34 @@ export default {
             label: '形状',
             tip: 'shape | 设置按钮形状，可选值为 `circle`、 `round` 或者不设',
           },
-          propType: { type: 'oneOf', value: ['default', 'circle', 'round'] },
-          defaultValue: 'default',
+          propType: { type: 'oneOf', value: ['rectangle', 'square', 'round', 'circle'] },
+          defaultValue: 'rectangle',
           setter: [
             {
               componentName: 'RadioGroupSetter',
               props: {
                 options: [
                   {
-                    title: '默认',
-                    value: 'default',
+                    title: '长方形',
+                    value: 'rectangle',
+                  },
+                  {
+                    title: '正方形',
+                    value: 'square',
+                  },
+                  {
+                    title: '圆角长方形',
+                    value: 'round',
                   },
                   {
                     title: '圆形',
                     value: 'circle',
-                  },
-                  {
-                    title: '圆角',
-                    value: 'round',
                   },
                 ],
               },
             },
             'VariableSetter',
           ],
-        },
-        {
-          name: 'icon',
-          title: { label: '图标', tip: 'icon | 设置按钮的图标组件' },
-          propType: 'node',
-          setter: {
-            componentName: 'SlotSetter',
-            initialValue: {
-              type: 'JSSlot',
-              value: [
-                {
-                  componentName: 'Icon',
-                  props: {
-                    type: 'SmileOutlined',
-                    size: 20,
-                    rotate: 0,
-                    spin: false,
-                  },
-                },
-              ],
-            },
-          },
         },
         {
           name: 'block',
@@ -244,10 +180,39 @@ export default {
           defaultValue: false,
         },
         {
-          name: 'danger',
-          title: { label: '危险按钮', tip: 'danger | 设置危险按钮' },
-          propType: 'bool',
-          setter: 'BoolSetter',
+          name: 'theme',
+          title: { label: '组件风格', tip: 'theme | 组件风格' },
+          propType: { type: 'oneOf', value: ['rectangle', 'square', 'round', 'circle'] },
+          setter: [
+            {
+              componentName: 'RadioGroupSetter',
+              props: {
+                options: [
+                  {
+                    title: '默认色',
+                    value: 'default',
+                  },
+                  {
+                    title: '品牌色',
+                    value: 'primary',
+                  },
+                  {
+                    title: '危险色',
+                    value: 'danger',
+                  },
+                  {
+                    title: '警告色',
+                    value: 'warning',
+                  },
+                  {
+                    title: '成功色',
+                    value: 'success',
+                  },
+                ],
+              },
+            },
+            'VariableSetter',
+          ],
           defaultValue: false,
         },
         {
