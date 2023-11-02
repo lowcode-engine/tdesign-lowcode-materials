@@ -7,7 +7,8 @@
     "build": "build-scripts build",
     "lowcode:dev": "build-scripts start --config ./build.lowcode.js",
     "lowcode:build": "build-scripts build --config ./build.lowcode.js",
-    "prepublishOnly": "npm run build && npm run lowcode:build"
+    "prepublishOnly": "npm run build && npm run lowcode:build",
+    "postinstall": "patch-package"
   },
   "files": [
     "es/",
