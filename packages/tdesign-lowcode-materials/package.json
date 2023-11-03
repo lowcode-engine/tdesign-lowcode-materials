@@ -59,7 +59,7 @@
     "materialSchema": "https://alifd.alicdn.com/npm/@alilc/tdesign-lowcode-materials@1.0.0/build/lowcode/assets-prod.json"
   },
   "license": "MIT",
-  "homepage": "https://unpkg.com/@alilc/antd-lowcode-materials@1.2.2/build/index.html",
+  "homepage": "https://unpkg.com/@alilc/tdesign-lowcode-materials@1.0.0/build/index.html",
   "repository": "https://github.com/alibaba/lowcode-materials.git",
   "exports": {
     "./prototype": {
