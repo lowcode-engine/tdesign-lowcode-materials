@@ -1,9 +1,11 @@
 如果构建过程中控制台发生错误，十有八九都是这个错误（https://github.com/alibaba/lowcode-engine/issues/301）
 
+```
 node  v16.17.1
 npm   8.15.0
 win10
 以上环境下可运行
+```
 
 必须使用 npm
 
